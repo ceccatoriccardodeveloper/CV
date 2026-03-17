@@ -43,7 +43,7 @@ Esperienza part-time in ambiente ad alta pressione che ha consolidato soft skill
 ## COMPETENZE TECNICHE
 
 ### Sviluppo Software & Database
-* **Linguaggi:** C, C#, Java, Swift, Python.
+* **Linguaggi:** C,C++ C#, Java, Swift, Python.
 * **Paradigma:** Programmazione orientata agli oggetti (OOP), gestione Thread.
 * **Database:** Relazionali (SQL) e NoSQL (MongoDB, DynamoDB).
 
