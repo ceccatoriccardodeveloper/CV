@@ -9,43 +9,70 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{ "/assets/css/style.css?v=" | append: site.github.build_revision | relative_url }}">
     <link rel="stylesheet" href="{{ '/assets/css/dark.css' | relative_url }}" id="dark-mode-stylesheet">
-    <!--[if lt IE 9]>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <![endif]-->
     {% include head-custom.html %}
   </head>
   <body>
     <div class="wrapper">
       <header>
         <h1><a href="{{ "/" | absolute_url }}">{{ site.title | default: site.github.repository_name }}</a></h1>
-				
-        {% if site.logo %}
-          <img src="{{site.logo | relative_url}}" alt="Logo" />
-        {% endif %}
-
-        <p>{{ site.description | default: site.github.project_tagline }}</p>
-
-        {% if site.github.is_project_page %}
-        <p class="view"><a href="{{ site.github.repository_url }}">View the Project on GitHub <small>{{ site.github.repository_nwo }}</small></a></p>
-        {% endif %}
-
-        {% if site.github.is_user_page %}
-        <p class="view"><a href="{{ site.github.owner_url }}">View My GitHub Profile</a></p>
-        {% endif %}
-				
-        <button id="theme-toggle-button" style="background-color: #f0f0f0; border: none; border-radius: 8px; padding: 10px 15px; font-size: 1.1em; cursor: pointer; margin-top: 8px; color: #333; display: flex; align-items: center; gap: 0.5em;">
-          <span id="theme-toggle-icon" class="fa fa-moon-o"></span>
-          <span id="theme-toggle-label">Dark Mode</span>
-        </button>
-        <div id="canvas3d" style="width:100%; height:300px;"></div>
-        
-				{% if site.show_downloads %}
-        <ul class="downloads">
-          <li><a href="{{ site.github.zip_url }}">Download <strong>ZIP File</strong></a></li>
-          <li><a href="{{ site.github.tar_url }}">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="{{ site.github.repository_url }}">View On <strong>GitHub</strong></a></li>
-        </ul>
-        {% endif %}
+      
+        <style>
+          /* Contenitore flessibile: affiancato su PC, colonna su Mobile */
+          .responsive-header-container {
+            display: flex;
+            flex-direction: row; /* Default: riga */
+            flex-wrap: wrap;     /* Permette di andare a capo se non c'è spazio */
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            width: 100%;
+          }
+      
+          .header-text {
+            flex: 1;             /* Prende lo spazio necessario */
+            min-width: 280px;    /* Non scende sotto i 280px per restare leggibile */
+          }
+      
+          .header-3d {
+            flex: 1;
+            min-width: 280px;
+            height: 300px;       /* Altezza fissa per il modello */
+            display: flex;
+            justify-content: center;
+          }
+      
+          /* --- IL TRUCCO PER IL TELEFONO --- */
+          @media (max-width: 768px) {
+            .responsive-header-container {
+              flex-direction: column; /* Impila il testo SOPRA e il 3D SOTTO */
+              text-align: center;
+            }
+            
+            .header-3d {
+              height: 250px; /* Riduciamo un po' l'altezza su mobile */
+              width: 100%;
+            }
+      
+            #theme-toggle-button {
+              margin: 0 auto; /* Centra il bottone su mobile */
+            }
+          }
+        </style>
+      
+        <div class="responsive-header-container">
+          <div class="header-text">
+            <p>{{ site.description | default: site.github.project_tagline }}</p>
+            
+            <button id="theme-toggle-button" style="background-color: #f0f0f0; border: none; border-radius: 8px; padding: 10px 15px; cursor: pointer; color: #333; display: flex; align-items: center; gap: 0.5em;">
+              <span id="theme-toggle-icon" class="fa fa-moon-o"></span>
+              <span id="theme-toggle-label">Dark Mode</span>
+            </button>
+          </div>
+      
+          <div class="header-3d">
+            <div id="canvas3d" style="width: 100%; height: 100%;"></div>
+          </div>
+        </div>
       </header>
       <section>
 
@@ -110,36 +137,86 @@
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
 
 <script>
+// 1. SCENA E TELECAMERA
 const scene = new THREE.Scene();
+const container = document.getElementById("canvas3d");
 
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / 300, 0.1, 1000);
+// La telecamera si adatta alle proporzioni del contenitore
+const camera = new THREE.PerspectiveCamera(75, container.offsetWidth / container.offsetHeight, 0.1, 1000);
+camera.position.z = 5;
 
-const renderer = new THREE.WebGLRenderer({ alpha: true });
-renderer.setSize(window.innerWidth, 300);
-document.getElementById("canvas3d").appendChild(renderer.domElement);
+// 2. RENDERER (Ottimizzato per Mobile e Retina)
+const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+renderer.setPixelRatio(window.devicePixelRatio); // Fondamentale per vedere bene su iPhone/Android
+renderer.setSize(container.offsetWidth, container.offsetHeight);
+container.appendChild(renderer.domElement);
 
-// luce
-const light = new THREE.HemisphereLight(0xffffff, 0x444444);
-scene.add(light);
+// 3. LUCI (Aumentate per far risaltare il modello)
+const ambientLight = new THREE.HemisphereLight(0xffffff, 0x444444, 1.2);
+scene.add(ambientLight);
 
-// loader modello
+const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
+dirLight.position.set(5, 5, 5);
+scene.add(dirLight);
+
+// 4. CONTROLLI (OrbitControls per il "dito" su mobile)
+// Assicurati di aver incluso la libreria OrbitControls nell'head
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true; 
+controls.enablePan = false;
+controls.minDistance = 2;
+controls.maxDistance = 15;
+
+// 5. CARICAMENTO MODELLO
 const loader = new THREE.GLTFLoader();
+let myModel;
 
 loader.load('{{ "/assets/models/a_windy_day.glb" | relative_url }}', function(gltf) {
-    const model = gltf.scene;
-    scene.add(model);
+    myModel = gltf.scene;
+    scene.add(myModel);
 
-    model.scale.set(1, 1, 1);
+    // Centra automaticamente il modello
+    const box = new THREE.Box3().setFromObject(myModel);
+    const center = box.getCenter(new THREE.Vector3());
+    myModel.position.sub(center); 
+
+    // Scala automatica basata sulla dimensione del box
+    const size = box.getSize(new THREE.Vector3());
+    const maxDim = Math.max(size.x, size.y, size.z);
+    if (maxDim > 0) {
+        const scale = 2.5 / maxDim; // Regola questo numero per ingrandire/rimpicciolire
+        myModel.scale.set(scale, scale, scale);
+    }
 }, undefined, function(error) {
-    console.error(error);
+    console.error("Errore caricamento:", error);
 });
 
-camera.position.z = 3;
+// 6. FUNZIONE RESPONSIVE (IL "SEGRETO" PER IL TELEFONO)
+window.addEventListener('resize', onWindowResize, false);
 
+function onWindowResize() {
+    // Ricalcola le misure del div genitore
+    const newWidth = container.offsetWidth;
+    const newHeight = container.offsetHeight;
+
+    camera.aspect = newWidth / newHeight;
+    camera.updateProjectionMatrix();
+
+    renderer.setSize(newWidth, newHeight);
+}
+
+// 7. ANIMAZIONE
 function animate() {
     requestAnimationFrame(animate);
+    
+    if (myModel) {
+        myModel.rotation.y += 0.005; // Rotazione lenta automatica
+    }
+    
+    controls.update();
     renderer.render(scene, camera);
 }
+
 animate();
 </script>
  </body>
