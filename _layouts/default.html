@@ -125,7 +125,7 @@ scene.add(light);
 // loader modello
 const loader = new THREE.GLTFLoader();
 
-loader.load('/CV/assets/models/a_windy_day.glb', function(gltf) {
+loader.load('{{ "/assets/models/a_windy_day.glb" | relative_url }}', function(gltf) {
     const model = gltf.scene;
     scene.add(model);
 
