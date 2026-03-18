@@ -37,6 +37,7 @@
           <span id="theme-toggle-icon" class="fa fa-moon-o"></span>
           <span id="theme-toggle-label">Dark Mode</span>
         </button>
+        <div id="canvas3d" style="width:100%; height:300px;"></div>
         
 				{% if site.show_downloads %}
         <ul class="downloads">
@@ -103,5 +104,33 @@
         }
       });
     </script>
-  </body>
+    
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / 300, 0.1, 1000);
+
+const renderer = new THREE.WebGLRenderer({ alpha: true });
+renderer.setSize(window.innerWidth, 300);
+document.getElementById("canvas3d").appendChild(renderer.domElement);
+
+// geometria (cubo)
+const geometry = new THREE.BoxGeometry();
+const material = new THREE.MeshBasicMaterial({ color: 0x00ffcc, wireframe: true });
+const cube = new THREE.Mesh(geometry, material);
+scene.add(cube);
+
+camera.position.z = 3;
+
+// animazione
+function animate() {
+  requestAnimationFrame(animate);
+  cube.rotation.x += 0.01;
+  cube.rotation.y += 0.01;
+  renderer.render(scene, camera);
+}
+animate();
+</script>
+ </body>
 </html>
