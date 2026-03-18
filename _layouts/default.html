@@ -127,9 +127,9 @@ dirLight.position.set(5, 5, 5);
 scene.add(dirLight);
 // loader modello
 const loader = new THREE.GLTFLoader();
-
+let model;
 loader.load('{{ "/assets/models/a_windy_day.glb" | relative_url }}', function(gltf) {
-    const model = gltf.scene;
+     model = gltf.scene;
     scene.add(model);
 
     model.scale.set(1.5, 1.5, 1.5);
