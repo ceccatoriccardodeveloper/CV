@@ -121,7 +121,9 @@ document.getElementById("canvas3d").appendChild(renderer.domElement);
 // luce
 const light = new THREE.HemisphereLight(0xffffff, 0x444444);
 scene.add(light);
-
+const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+dirLight.position.set(5, 5, 5);
+scene.add(dirLight);
 // loader modello
 const loader = new THREE.GLTFLoader();
 
