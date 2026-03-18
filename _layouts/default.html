@@ -136,7 +136,7 @@
   loader.load('{{ "/assets/models/a_windy_day.glb" | relative_url }}', function(gltf) {
       model = gltf.scene;
       scene.add(model);
-      model.scale.set(1.5, 1.5, 1.5);
+      model.scale.set(1, 1, 1);
   }, undefined, function(error) {
       console.error(error);
   });
