@@ -111,10 +111,11 @@
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
 
 <script>
+  // creazione scena
   const scene = new THREE.Scene();
   const canvas = document.getElementById("canvas3d");
   
-  // Camera
+  // camera
   const camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
   camera.position.z = 2.5;
   
@@ -123,37 +124,42 @@
   renderer.setSize(canvas.clientWidth, canvas.clientHeight);
   canvas.appendChild(renderer.domElement);
   
-  // Luci
+  // luci
   const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444);
   scene.add(hemiLight);
   const dirLight = new THREE.DirectionalLight(0xffffff, 1);
   dirLight.position.set(5, 5, 5);
   scene.add(dirLight);
   
-  // Loader modello
   let model;
   let mixer;
+  // carico il modello
   const loader = new THREE.GLTFLoader();
   loader.load('{{ "/assets/models/a_windy_day.glb" | relative_url }}', function(gltf) {
-     // 🎬 Animazioni
-    mixer = new THREE.AnimationMixer(model);
+    // inseriamo il modello scalato
     model = gltf.scene;
+    model.scale.set(1.5, 1.5, 1.5);
+    scene.add(model);
+    // aggiungiamo le animazioni
+    mixer = new THREE.AnimationMixer(model);
+    
     gltf.animations.forEach((clip) => {
-       mixer.clipAction(clip).play();
+         mixer.clipAction(clip).play();
     });
-      scene.add(model);
-      model.scale.set(1.5, 1.5, 1.5);
+    console.log("MODEL LOADED");
+    console.log(gltf);
+    console.log(gltf.animations);
   }, undefined, function(error) {
       console.error(error);
   });
   
-  // Animate
+  // movimento oggetto + animazioni
   const clock = new THREE.Clock();
   function animate() {
       requestAnimationFrame(animate);
       if (model) model.rotation.y += 0.01;
       const delta = clock.getDelta();
-      if (mixer) mixer.update(delta); // ← fa avanzare l’animazi
+      if (mixer) mixer.update(delta);
       renderer.render(scene, camera);
   }
   animate();
