@@ -1,7 +1,7 @@
 # Riccardo Ceccato
-**Studente di Informatica @ Università di Padova**
-email: ceccatoriccardodeveloper@gmail.com  
-tel: 3519939155  
+**Studente di Informatica @ Università di Padova**<br>
+email: ceccatoriccardodeveloper@gmail.com <br>
+tel: 3519939155  <br>
 [GitHub](https://github.com/ceccatoriccardodeveloper) | [Progetto Database](https://github.com/ceccatoriccardodeveloper/database-project.git)
 
 ---
