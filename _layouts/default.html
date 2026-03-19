@@ -144,8 +144,8 @@
     mixer = new THREE.AnimationMixer(model);
     gltf.animations.forEach((clip) => {
       const action = mixer.clipAction(clip);
-      action.setLoop(THREE.LoopRepeat); // ripete continuamente
-      action.play()
+      action.setLoop(THREE.LoopPingPong, Infinity);
+      action.play();
       action.timeScale = 0.5;
     });
 
