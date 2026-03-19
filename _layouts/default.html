@@ -132,6 +132,7 @@
   
   // Loader modello
   let model;
+  let mixer;
   const loader = new THREE.GLTFLoader();
   loader.load('{{ "/assets/models/a_windy_day.glb" | relative_url }}', function(gltf) {
      // 🎬 Animazioni
