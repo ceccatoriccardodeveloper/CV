@@ -146,6 +146,7 @@
       const action = mixer.clipAction(clip);
       action.setLoop(THREE.LoopRepeat); // ripete continuamente
       action.play()
+      action.timeScale = 0.5;
     });
 
   }, undefined, function(error) {
