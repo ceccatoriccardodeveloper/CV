@@ -141,14 +141,16 @@
     model.scale.set(1.5, 1.5, 1.5);
     scene.add(model);
     // aggiungiamo le animazioni
-    mixer = new THREE.AnimationMixer(model);
-    
-    gltf.animations.forEach((clip) => {
-         mixer.clipAction(clip).play();
-    });
-    console.log("MODEL LOADED");
-    console.log(gltf);
-    console.log(gltf.animations);
+    // 2️⃣ se ci sono animazioni creo il mixer
+    if (gltf.animations && gltf.animations.length > 0) {
+        mixer = new THREE.AnimationMixer(model);
+        gltf.animations.forEach((clip) => {
+            mixer.clipAction(clip).play();
+        });
+        console.log("Animazioni trovate e avviate!");
+    } else {
+        console.log("Nessuna animazione presente nel modello.");
+    }
   }, undefined, function(error) {
       console.error(error);
   });
