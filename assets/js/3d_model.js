@@ -1,4 +1,6 @@
-
+const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+if(!isMobile){init3dScene();}
+function init3dScene(){
   // creazione scena
   const scene = new THREE.Scene();
   const canvas = document.getElementById("canvas3d");
@@ -68,3 +70,4 @@
   }
   window.addEventListener('resize', onWindowResize);
   onWindowResize();
+}
