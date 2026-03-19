@@ -138,7 +138,7 @@
   loader.load('{{ "/assets/models/a_windy_day.glb" | relative_url }}', function(gltf) {
     // inseriamo il modello scalato
     model = gltf.scene;
-    model.scale.set(1.5, 1.5, 1.5);
+    model.scale.set(1, 1, 1);
     scene.add(model);
     // aggiungiamo le animazioni
     // 2️⃣ se ci sono animazioni creo il mixer
