@@ -1,5 +1,9 @@
 const isMobile = /Mobi|Android/i.test(navigator.userAgent);
-if(!isMobile){init3dScene();}
+if(!isMobile)
+    {init3dScene();}
+else{
+    document.getElementById('mobile-warning').style.display = 'block';
+}
 function init3dScene(){
   // creazione scena
   const scene = new THREE.Scene();
