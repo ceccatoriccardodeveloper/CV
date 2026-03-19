@@ -134,6 +134,14 @@
   let model;
   const loader = new THREE.GLTFLoader();
   loader.load('{{ "/assets/models/a_windy_day.glb" | relative_url }}', function(gltf) {
+     // 🎬 Animazioni
+    mixer = new THREE.AnimationMixer(model);
+
+    gltf.animations.forEach((clip) => {
+       mixer.clipAction(clip).play();
+    });
+
+
       model = gltf.scene;
       scene.add(model);
       model.scale.set(1.5, 1.5, 1.5);
@@ -142,9 +150,12 @@
   });
   
   // Animate
+  const clock = new THREE.Clock();
   function animate() {
       requestAnimationFrame(animate);
       if (model) model.rotation.y += 0.01;
+      const delta = clock.getDelta();
+      if (mixer) mixer.update(delta); // ← fa avanzare l’animazi
       renderer.render(scene, camera);
   }
   animate();
