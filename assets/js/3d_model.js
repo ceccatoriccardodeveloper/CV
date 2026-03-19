@@ -2,7 +2,7 @@ const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 if(!isMobile)
     {init3dScene();}
 else{
-    document.getElementById('mobile-warning').style.display = 'block';
+    document.getElementById('mobile-warning').classList.add('show');
 }
 function init3dScene(){
   // creazione scena

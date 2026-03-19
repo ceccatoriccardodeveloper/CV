@@ -1,0 +1,26 @@
+#mobile-warning {
+    display: none;              
+    text-align: center;          
+    padding: 1em;              
+    background-color: #fffae6;   
+    color: #333;                 
+    font-weight: bold;           
+    font-size: 1em;              
+    border-radius: 0.5em;      
+    margin: 1em auto;            
+    max-width: 90%;              
+    box-shadow: 0 0.2em 0.5em rgba(0,0,0,0.1); 
+    z-index: 1000;               
+    line-height: 1.4;            
+  }
+  
+
+  #mobile-warning.show {
+    display: block;
+    animation: slideDown 0.5s ease;
+  }
+  
+  @keyframes slideDown {
+    from { transform: translateY(-1em); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
