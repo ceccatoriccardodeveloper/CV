@@ -1,6 +1,6 @@
 #canvas3d {
     width: 100%;
-    height: 40vh; /* 40% dell’altezza della finestra */
+    height: 40vh; 
     position: relative;
-    margin-bottom: 20px; /* spinge il testo sotto il canvas */
+    margin-bottom: 20px;
   }
