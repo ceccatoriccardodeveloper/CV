@@ -109,7 +109,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
 <script>
   // creazione scena
   const scene = new THREE.Scene();
@@ -130,6 +130,13 @@
   const dirLight = new THREE.DirectionalLight(0xffffff, 1);
   dirLight.position.set(5, 5, 5);
   scene.add(dirLight);
+
+  // controlli mouse
+  const controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;    
+  controls.dampingFactor = 0.05;
+  controls.enableZoom = false;       
+  controls.enablePan = false;
   
   let model;
   let mixer;
@@ -160,6 +167,7 @@
       if (model) model.rotation.y += 0.01;
       const delta = clock.getDelta();
       if (mixer) mixer.update(delta);
+      controls.update();
       renderer.render(scene, camera);
   }
   animate();
