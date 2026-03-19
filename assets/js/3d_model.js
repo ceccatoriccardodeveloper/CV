@@ -30,7 +30,7 @@
   let mixer;
   // carico il modello
   const loader = new THREE.GLTFLoader();
-  loader.load('../models/a_windy_day.glb', function(gltf) {
+  loader.load(MODEL_PATH, function(gltf) {
     // inseriamo il modello scalato
     model = gltf.scene;
     model.scale.set(1.2, 1.2, 1.2);
